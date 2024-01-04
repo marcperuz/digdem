@@ -167,8 +167,8 @@ class SurfMod(dict):
             else:
                 assert type(yaxis) == np.ndarray, "yaxis is not np.ndarray"
 
-            sizex_coherent = mask.shape[0] == surf_old.shape[0] == xaxis.shape[0]
-            sizey_coherent = mask.shape[1] == surf_old.shape[1] == yaxis.shape[0]
+            sizex_coherent = mask.shape[1] == surf_old.shape[1] == xaxis.shape[1]
+            sizey_coherent = mask.shape[0] == surf_old.shape[0] == yaxis.shape[0]
             assert sizex_coherent & sizey_coherent, "Uncoherent shapes"
 
             self.surf_old = np.copy(surf_old)

@@ -43,6 +43,7 @@ def plot_topo(
     z,
     x,
     y,
+    indexing='ij',
     contour_step=None,
     nlevels=None,
     level_min=None,
@@ -106,10 +107,6 @@ def plot_topo(
         DESCRIPTION. The default is 315.
     altdeg : TYPE, optional
         DESCRIPTION. The default is 45.
-    plot_terrain : TYPE, optional
-        DESCRIPTION. The default is False.
-    cmap_terrain : TYPE, optional
-        DESCRIPTION. The default is 'gist_earth'.
     fraction : TYPE, optional
         DESCRIPTION. The default is 1.
     ndv : TYPE, optional
@@ -124,6 +121,9 @@ def plot_topo(
     dy = y[1] - y[0]
     im_extent = [x[0] - dx / 2, x[-1] + dx / 2, y[0] - dy / 2, y[-1] + dy / 2]
     ls = mcolors.LightSource(azdeg=azdeg, altdeg=altdeg)
+    
+    if indexing == 'ij':
+        z = np.flip(z, axis=1).T
 
     auto_bold_intv = None
 
