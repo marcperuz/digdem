@@ -9,40 +9,47 @@ Created on Tue Feb  4 11:49:44 2020
 import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
-from matplotlib.colors import LightSource
 
-def hillshade(array, azimuth, angle_altitude,xaxis=None,yaxis=None,maxlight=[0,1]):
-    
-    if (xaxis is None) or (yaxis is None):    
-        x, y = np.gradient(array)
+BOLD_CONTOURS_INTV = [0.1, 0.2, 0.5, 1, 2., 5, 10, 20, 50, 100, 200, 500, 1000]
+NB_THIN_CONTOURS = 10
+NB_BOLD_CONTOURS = 3
+
+def get_contour_intervals(zmin, zmax, nb_bold_contours=None,
+                          nb_thin_contours=None):
+
+    if nb_thin_contours is None:
+        nb_thin_contours = NB_THIN_CONTOURS
+    if nb_bold_contours is None:
+        nb_bold_contours = NB_BOLD_CONTOURS
+
+    intv = (zmax - zmin) / nb_bold_contours
+    i = np.argmin(np.abs(np.array(BOLD_CONTOURS_INTV) - intv))
+
+    bold_intv = BOLD_CONTOURS_INTV[i]
+    if BOLD_CONTOURS_INTV[i] != BOLD_CONTOURS_INTV[0]:
+        if bold_intv - intv > 0:
+            bold_intv = BOLD_CONTOURS_INTV[i-1]
+
+    if nb_thin_contours is None:
+        thin_intv = bold_intv / NB_THIN_CONTOURS
+        if (zmax - zmin)/bold_intv > 5:
+            thin_intv = thin_intv*2
     else:
-        x,y=np.gradient(array,xaxis,yaxis,edge_order=2)
-    slope = np.pi/2. - np.arctan(np.sqrt(x*x + y*y))
-    aspect = np.arctan2(-x, y)
-    azimuthrad = azimuth*np.pi / 180.
-    altituderad = angle_altitude*np.pi / 180.
-     
- 
-    shaded = np.sin(altituderad) * np.sin(slope)\
-     + np.cos(altituderad) * np.cos(slope)\
-     * np.cos(azimuthrad - aspect)
-     
-    out=255*(shaded + 1)/2
-    out=(maxlight[1]-maxlight[0])*out+maxlight[0]
-    return out
+        thin_intv = bold_intv / nb_thin_contours
 
-def plot_topo(z, x, y, contour_step=None, nlevels=25, level_min=None,
-              step_contour_bold=0, contour_labels_properties=None,
+    return bold_intv, thin_intv
+
+
+def plot_topo(z, x, y, contour_step=None, nlevels=None, level_min=None,
+              step_contour_bold='auto', contour_labels_properties=None,
               label_contour=True, contour_label_effect=None,
-              axe=None, vert_exag=1,
+              axe=None,
+              vert_exag=1, fraction=1, ndv=-9999, uniform_grey=None,
               contours_prop=None, contours_bold_prop=None,
-              figsize=(10, 10),
+              figsize=None,
               interpolation=None,
               sea_level=0, sea_color=None, alpha=1, azdeg=315, altdeg=45,
-              zmin=None, zmax=None,
-              plot_terrain=False, cmap_terrain='gist_earth',
-              blend_mode='overlay', fraction=1, ndv=0,
-              plot_colorbar=False, colorbar_kwargs=None):
+              zmin=None, zmax=None):
     """
     Plot topography with hillshading.
 
@@ -86,16 +93,10 @@ def plot_topo(z, x, y, contour_step=None, nlevels=25, level_min=None,
         DESCRIPTION. The default is False.
     cmap_terrain : TYPE, optional
         DESCRIPTION. The default is 'gist_earth'.
-    blend_mode : TYPE, optional
-        DESCRIPTION. The default is 'overlay'.
     fraction : TYPE, optional
         DESCRIPTION. The default is 1.
     ndv : TYPE, optional
-        DESCRIPTION. The default is 0.
-    plot_colorbar : TYPE, optional
-        DESCRIPTION. The default is False.
-    colorbar_kwargs : TYPE, optional
-        DESCRIPTION. The default is None.
+        DESCRIPTION. The default is -9999.
 
     Returns
     -------
@@ -108,7 +109,13 @@ def plot_topo(z, x, y, contour_step=None, nlevels=25, level_min=None,
                  x[-1]+dx/2,
                  y[0]-dy/2,
                  y[-1]+dy/2]
-    ls = LightSource(azdeg=azdeg, altdeg=altdeg)
+    ls = mcolors.LightSource(azdeg=azdeg, altdeg=altdeg)
+
+    auto_bold_intv = None
+
+    if nlevels is None and contour_step is None:
+        auto_bold_intv, contour_step = get_contour_intervals(np.nanmin(z),
+                                                             np.nanmax(z))
 
     if level_min is None:
         if contour_step is not None:
@@ -129,59 +136,40 @@ def plot_topo(z, x, y, contour_step=None, nlevels=25, level_min=None,
     axe.set_xlabel('X (m)')
     axe.set_aspect('equal')
 
-    if plot_terrain:
-        z2 = np.copy(z)
-        if zmin is None:
-            zmin = np.nanmin(z2)
-        if zmax is None:
-            zmax = np.nanmax(z2)
-        z2[np.isnan(z2)] = ndv
-        z2 = np.flip(z2.T, axis=0)
-        rgb = ls.shade(z2, plt.get_cmap(cmap_terrain),
-                       blend_mode=blend_mode, fraction=fraction,
-                       vert_exag=vert_exag, dx=dx, dy=dy,
-                       vmin=zmin, vmax=zmax)
-        ind = z2 == ndv
-        ind = np.tile(ind[:, :, np.newaxis], (1, 1, 4))
-        rgb[ind] = np.nan
-        alpha=1
-        plt.imshow(rgb, extent=im_extent,
-                   interpolation=interpolation, alpha=alpha)
-        if plot_colorbar:
-            if colorbar_kwargs is None:
-                colorbar_kwargs = {}
-            norm = Normalize(vmin=zmin, vmax=zmax)
-            cc = colorbar(cm.ScalarMappable(norm=norm, cmap=cmap_terrain),
-                          ax=axe, **colorbar_kwargs)
-            if 'position' in colorbar_kwargs:
-                if colorbar_kwargs['position'] in ['bottom', 'top']:
-                    cc.ax.set_xlabel('Altitude (m)')
-                else:
-                    cc.ax.set_ylabel('Altitude (m)')
-            else:
-                cc.ax.set_ylabel('Altitude (m)')
-    else:
-        shaded_topo = ls.hillshade(np.flip(z.T, axis=0),
+    if uniform_grey is None:
+        shaded_topo = ls.hillshade(z,
                                    vert_exag=vert_exag, dx=dx, dy=dy,
-                                   fraction=fraction)
-        axe.imshow(shaded_topo, cmap='gray', extent=im_extent,
-                   interpolation=interpolation, alpha=alpha)
+                                   fraction=1)
+    else:
+        shaded_topo = np.ones(z.shape)*uniform_grey
+    shaded_topo[z == ndv] = np.nan
+    axe.imshow(shaded_topo, cmap='gray', extent=im_extent,
+               interpolation=interpolation, alpha=alpha, vmin=0, vmax=1)
 
     if contours_prop is None:
         contours_prop = dict(alpha=0.5, colors='k',
-                             linewidths=0.4)
-    axe.contour(z.T, extent=im_extent,
+                             linewidths=0.5)
+    axe.contour(x, y, np.flip(z, axis=0), extent=im_extent,
                 levels=levels,
                 **contours_prop)
 
     if contours_bold_prop is None:
-        contours_bold_prop = dict(alpha=0.5, colors='k',
-                                  linewidths=0.6)
+        contours_bold_prop = dict(alpha=0.8, colors='k',
+                                  linewidths=0.8)
+
+    if step_contour_bold == 'auto':
+        if auto_bold_intv is None:
+            auto_bold_intv, _ = get_contour_intervals(np.nanmin(z),
+                                                      np.nanmax(z))
+        step_contour_bold = auto_bold_intv
 
     if step_contour_bold > 0:
         lmin = np.ceil(np.nanmin(z)/step_contour_bold)*step_contour_bold
+        if lmin < level_min:
+            lmin = lmin + step_contour_bold
         levels = np.arange(lmin, np.nanmax(z), step_contour_bold)
-        cs = axe.contour(z.T, extent=im_extent,
+        cs = axe.contour(x, y, np.flip(z, axis=0),
+                         extent=im_extent,
                          levels=levels,
                          **contours_bold_prop)
         if label_contour:
@@ -194,7 +182,7 @@ def plot_topo(z, x, y, contour_step=None, nlevels=25, level_min=None,
     if sea_color is not None:
         cmap_sea = mcolors.ListedColormap([sea_color])
         cmap_sea.set_under(color='w', alpha=0)
-        mask_sea = (z.T <= sea_level)*1
+        mask_sea = (z <= sea_level)*1
         if mask_sea.any():
             axe.imshow(mask_sea, extent=im_extent, cmap=cmap_sea,
                        vmin=0.5, origin='lower', interpolation='none')
