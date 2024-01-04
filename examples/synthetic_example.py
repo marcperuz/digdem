@@ -6,9 +6,11 @@ Created on Mon Feb  3 11:10:35 2020
 @author: peruzzetto
 """
 
+import numpy as np
+import matplotlib.pyplot as plt
+
 import digdem.surfmod
 import digdem.section
-import numpy as np
 
 xmesh, ymesh = np.meshgrid(
     np.linspace(0, 1, 300), np.linspace(0, 1, 300), indexing="ij"
@@ -62,7 +64,8 @@ new_dem.plot(
     figsize=None,
     axe=None,
     contour_step=0.05,
-    light_pos=[45, 45],
+    azdeg=315,
+    altdeg=45,
     contour_properties={},
     section_properties={"lw": 3},
     text_properties={},
@@ -84,7 +87,8 @@ new_dem.plot(
     figsize=None,
     axe=None,
     contour_step=0.05,
-    light_pos=[45, 45],
+    azdeg=315,
+    altdeg=45,
     contour_properties={},
     section_properties={"lw": 3},
     text_properties={},
@@ -108,7 +112,8 @@ new_dem.plot(
     figsize=None,
     axe=None,
     contour_step=0.05,
-    light_pos=[45, 45],
+    azdeg=315,
+    altdeg=45,
     contour_properties={},
     section_properties={"lw": 3},
     text_properties={},
@@ -119,3 +124,5 @@ new_dem.plot(
 
 new_dem["long"].plot()
 new_dem["trans"].plot()
+
+plt.show()

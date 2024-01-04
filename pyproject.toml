@@ -18,14 +18,13 @@ classifiers = [
 ]
 keywords = ["thin-layer", "shallow-water", "display", "simulation", "model", "processing", "benchmark"]
 dependencies = [
-    "seaborn", "requests", "scipy"
+    "shapely", "geopandas", "requests", "scipy", "matplotlib"
 ]
 requires-python = ">=3.8"
 
 [project.optional-dependencies]
 test = ["pytest"]
 dev = ["pipreqs"]
-gis = ["rasterio", "shapely"]
 
 [tools.setuptools]
 packages = ["src"]

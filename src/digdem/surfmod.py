@@ -11,7 +11,7 @@ import digdem.plot
 import numpy as np
 import matplotlib.pyplot as plt
 import os
-from osgeo import ogr
+import geopandas as gpd
 import warnings
 import logging
 from collections import defaultdict
@@ -79,22 +79,21 @@ class SurfMod(dict):
         sections = []
         try:
             assert shapefile[-4:] == ".shp"
-            shp_reader = ogr.Open(shapefile)
+            shp_reader = gpd.read_file(shapefile)
             # print(shapefile)
-            layer = shp_reader.GetLayer()
-            for feature in layer:
-                line = feature.GetGeometryRef()
+            for row in shp_reader.index:
+                line = shp_reader.loc[row, 'geometry']
                 npoints = line.GetPointCount()
                 points = []
                 for i in range(npoints):
                     points.append(line.GetPoint(i))
                 direction = None
                 orientation = None
-                if feature.IsFieldSet(direction_field_name):
-                    direction = feature.GetField(direction_field_name)
-                if feature.IsFieldSet(orientation_field_name):
-                    orientation = feature.GetField(orientation_field_name)
-                name = feature.GetField("name")
+                if direction_field_name in shp_reader.columns:
+                    direction = shp_reader.loc[row, direction_field_name]
+                if orientation_field_name in shp_reader.columns:
+                    orientation = shp_reader.loc[row, orientation_field_name]
+                name = shp_reader.loc[row, "name"]
                 sections.append(
                     Section(points, name, direction=direction, orientation=orientation)
                 )
