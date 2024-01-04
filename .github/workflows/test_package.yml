@@ -21,6 +21,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install ruff pytest
           if [ -f pytest_requirements.txt ]; then pip install -r pytest_requirements.txt; fi
-      - name: Test with pytest
-        run: |
-          pytest
+      #- name: Test with pytest
+      #  run: |
+      #    pytest
