@@ -56,14 +56,13 @@ new_dem = digdem.surfmod.SurfMod(
 )
 
 # %%Ue only intersection for topography interpolation
-new_dem.set_intersections(["long"], ["trans"], [0.4])
+new_dem.set_intersections(["long"], ["trans"], [0.7])
 
 new_dem.update_interpolation()
 
 new_dem.plot(
     figsize=None,
     axe=None,
-    contour_step=0.05,
     azdeg=315,
     altdeg=45,
     contour_properties={},

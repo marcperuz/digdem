@@ -82,7 +82,7 @@ class SurfMod(dict):
             shp_reader = gpd.read_file(shapefile)
             # print(shapefile)
             for row in shp_reader.index:
-                line = shp_reader.loc[row, 'geometry']
+                line = shp_reader.loc[row, "geometry"]
                 npoints = line.GetPointCount()
                 points = []
                 for i in range(npoints):
@@ -95,7 +95,12 @@ class SurfMod(dict):
                     orientation = shp_reader.loc[row, orientation_field_name]
                 name = shp_reader.loc[row, "name"]
                 sections.append(
-                    Section(points, name, direction=direction, orientation=orientation)
+                    Section(
+                        points,
+                        name,
+                        direction=direction,
+                        orientation=orientation,
+                    )
                 )
         except AssertionError:
             print("Format of " + shapefile + " file not recognized")
@@ -142,6 +147,7 @@ class SurfMod(dict):
         mask,
         xaxis=None,
         yaxis=None,
+        indexing="ij",
         sections=[],
         contour=None,
         normalized=False,
@@ -155,20 +161,31 @@ class SurfMod(dict):
         self.logger = logging.getLogger(__name__)
 
         try:
-            #            assert(type(mask)==type(surf_old)==np.ndarray),\
-            #                        'surf_old or mask are not np.ndarray'
+            assert indexing in ["raster", "ij"], (
+                "indexing must be " "raster" " or " "ij" ""
+            )
+            self.indexing = indexing
+            if indexing == "raster":
+                surf_old = np.flip(surf_old, axis=1).T
+                mask = np.flip(mask, axis=1).T
+            elif indexing == "ij":
+                pass
 
             if xaxis is None:
-                xaxis = np.arange(0, surf_old.shape[1], 1)
+                xaxis = np.arange(0, surf_old.shape[0], 1)
             else:
                 assert type(xaxis) == np.ndarray, "xaxis is not np.ndarray"
             if yaxis is None:
-                yaxis = np.arange(0, surf_old.shape[0], 1)
+                yaxis = np.arange(0, surf_old.shape[1], 1)
             else:
                 assert type(yaxis) == np.ndarray, "yaxis is not np.ndarray"
 
-            sizex_coherent = mask.shape[1] == surf_old.shape[1] == xaxis.shape[1]
-            sizey_coherent = mask.shape[0] == surf_old.shape[0] == yaxis.shape[0]
+            sizex_coherent = (
+                mask.shape[0] == surf_old.shape[0] == xaxis.shape[0]
+            )
+            sizey_coherent = (
+                mask.shape[1] == surf_old.shape[1] == yaxis.shape[0]
+            )
             assert sizex_coherent & sizey_coherent, "Uncoherent shapes"
 
             self.surf_old = np.copy(surf_old)
@@ -209,6 +226,54 @@ class SurfMod(dict):
             raise
 
     @property
+    def surf_min(self):
+        return self._surf_min
+
+    @surf_min.setter
+    def surf_min(self, array):
+        if array is None:
+            self._surf_min = array
+        else:
+            if self.indexing == "raster":
+                self._surf_min = np.flip(array, axis=1).T
+            elif self.indexing == "ij":
+                self._surf_min = array
+
+    @surf_min.getter
+    def surf_min(self):
+        if self._surf_min is None:
+            return self._surf_min
+        else:
+            if self.indexing == "raster":
+                return np.flip(self._surf_min.T, axis=1)
+            elif self.indexing == "ij":
+                return self._surf_min
+
+    @property
+    def surf_max(self):
+        return self._surf_max
+
+    @surf_max.setter
+    def surf_max(self, array):
+        if array is None:
+            self._surf_max = array
+        else:
+            if self.indexing == "raster":
+                self._surf_max = np.flip(array, axis=1).T
+            elif self.indexing == "ij":
+                self._surf_max = array
+
+    @surf_max.getter
+    def surf_max(self):
+        if self._surf_max is None:
+            return self._surf_max
+        else:
+            if self.indexing == "raster":
+                return np.flip(self._surf_max.T, axis=1)
+            elif self.indexing == "ij":
+                return self._surf_max
+
+    @property
     def sections(self):
         return self._sections
 
@@ -223,7 +288,9 @@ class SurfMod(dict):
             if sections[-4:] == ".shp":
                 prof = SurfMod.read_shapefile(sections)
             else:
-                warnings.warn("sections initiation : file format not recognized")
+                warnings.warn(
+                    "sections initiation : file format not recognized"
+                )
         self._sections = prof
 
         self.update_sections_extents()
@@ -261,8 +328,12 @@ class SurfMod(dict):
     def set_fz_old(self, finterp=None, outside_mask=False):
         if finterp is None:
             xmin, xmax, ymin, ymax = self.sections_extent
-            indx = np.argwhere((self.xaxis >= xmin) & (self.xaxis <= xmax))[:, 0]
-            indy = np.argwhere((self.yaxis >= ymin) & (self.yaxis <= ymax))[:, 0]
+            indx = np.argwhere((self.xaxis >= xmin) & (self.xaxis <= xmax))[
+                :, 0
+            ]
+            indy = np.argwhere((self.yaxis >= ymin) & (self.yaxis <= ymax))[
+                :, 0
+            ]
             xinterp = self.xaxis[indx[0] : indx[-1] + 1 : self.sparse_interp]
             yinterp = self.yaxis[indy[0] : indy[-1] + 1 : self.sparse_interp]
             zinterp = self.surf_old[
@@ -270,7 +341,9 @@ class SurfMod(dict):
                 indy[0] : indy[-1] + 1 : self.sparse_interp,
             ]
             if outside_mask:
-                xinterp2, yinterp2 = np.meshgrid(xinterp, yinterp, indexing="ij")
+                xinterp2, yinterp2 = np.meshgrid(
+                    xinterp, yinterp, indexing="ij"
+                )
                 # Indexs inside the mask
                 mask2 = self.mask[
                     indx[0] : indx[-1] + 1 : self.sparse_interp,
@@ -295,7 +368,9 @@ class SurfMod(dict):
                     smooth=self.smooth,
                 )
                 # Modify altitudes within the mask for fz_old definition
-                zinterp[ind_mask] = fz_tmp(xinterp2[ind_mask], yinterp2[ind_mask])
+                zinterp[ind_mask] = fz_tmp(
+                    xinterp2[ind_mask], yinterp2[ind_mask]
+                )
             self.fz_old = scipy.interpolate.RectBivariateSpline(
                 xinterp, yinterp, zinterp
             )
@@ -328,13 +403,19 @@ class SurfMod(dict):
             xmesh, ymesh = np.meshgrid(self.xaxis, self.yaxis, indexing="ij")
             self.surf_new[ind] = self.fz_new(xmesh[ind], ymesh[ind])
             if self.surf_min is not None:
-                self.surf_new[ind] = np.maximum(self.surf_new[ind], self.surf_min[ind])
+                self.surf_new[ind] = np.maximum(
+                    self.surf_new[ind], self.surf_min[ind]
+                )
             if self.surf_max is not None:
-                self.surf_new[ind] = np.minimum(self.surf_new[ind], self.surf_max[ind])
+                self.surf_new[ind] = np.minimum(
+                    self.surf_new[ind], self.surf_max[ind]
+                )
 
     def add_section(self, section):
         try:
-            assert isinstance(section, Section), "section is not a Section instance"
+            assert isinstance(
+                section, Section
+            ), "section is not a Section instance"
             self.sections.append(section)
             self[section.name] = section
             if self.contour is not None:
@@ -357,14 +438,16 @@ class SurfMod(dict):
             y = self.yaxis
 
         try:
+            backend = plt.get_backend()
+            plt.switch_backend("Agg")
             fig, axe = plt.subplots(1, 1)
             cs = axe.contour(x, y, mask.T, [0.5])
             p = cs.collections[0].get_paths()
             assert len(p) > 0, "mask is either all 1 or all 0"
             p = p[0]
             self.contour = geom.Polygon(p.vertices)
-
             self.update_sections_extents()
+            plt.switch_backend(backend)
 
         except ValueError:
             raise
@@ -381,20 +464,30 @@ class SurfMod(dict):
         if len(args) == 0:
             for i in range(nsections):
                 for j in range(i + 1, nsections):
-                    intersect = self[names[i]].line.intersection(self[names[j]].line)
+                    intersect = self[names[i]].line.intersection(
+                        self[names[j]].line
+                    )
                     # print(intersect)
                     if isinstance(intersect, geom.Point):
                         intersect = geom.MultiPoint([intersect])
                     if isinstance(intersect, geom.LineString):
                         continue
-                    self.intersections[names[i]][names[j]]["points"] = intersect
-                    self.intersections[names[j]][names[i]]["points"] = intersect
+                    self.intersections[names[i]][names[j]][
+                        "points"
+                    ] = intersect
+                    self.intersections[names[j]][names[i]][
+                        "points"
+                    ] = intersect
                     posi = [
-                        self[names[i]].line.project(point, normalized=self.normalized)
+                        self[names[i]].line.project(
+                            point, normalized=self.normalized
+                        )
                         for point in intersect.geoms
                     ]
                     posj = [
-                        self[names[j]].line.project(point, normalized=self.normalized)
+                        self[names[j]].line.project(
+                            point, normalized=self.normalized
+                        )
                         for point in intersect.geoms
                     ]
                     self.intersections[names[i]][names[j]]["pos"] = posi
@@ -434,9 +527,11 @@ class SurfMod(dict):
             pos = args[0]
             z = args[1]
         elif len(args) == 1:
-            pos, z, z_intersections = SurfMod.read_control_points_from_textfile(
-                args[0], sep=sep
-            )
+            (
+                pos,
+                z,
+                z_intersections,
+            ) = SurfMod.read_control_points_from_textfile(args[0], sep=sep)
             for name1 in z_intersections:
                 for name2 in z_intersections[name1]:
                     zz = z_intersections[name1][name2]
@@ -514,12 +609,12 @@ class SurfMod(dict):
         self,
         figsize=None,
         axe=None,
-        contour_properties={},
-        section_properties={},
-        text_properties={},
-        control_points_properties={},
+        contour_properties=None,
+        section_properties=None,
+        text_properties=None,
+        control_points_properties=None,
         plot_interp_points=False,
-        interp_points_properties={},
+        interp_points_properties=None,
         point_name_dist=None,
         npts=2,
         **kwargs,
@@ -530,13 +625,30 @@ class SurfMod(dict):
             fig = axe.figure
 
         # Plot topography
-        digdem.plot.plot_topo(self.surf_new, self.xaxis, self.yaxis, axe=axe, **kwargs)
+
+        digdem.plot.plot_topo(
+            self.surf_new,
+            self.xaxis,
+            self.yaxis,
+            indexing=self.indexing,
+            axe=axe,
+            **kwargs,
+        )
 
         # Plot contour
+        if contour_properties is None:
+            contour_properties = dict()
         xc, yc = self.contour.exterior.coords.xy
         axe.plot(xc, yc, **contour_properties)
 
         # Plot sections
+        if control_points_properties is None:
+            control_points_properties = {
+                "marker": "o",
+                "ms": 5,
+                "mec": "white",
+                "mfc": "k",
+            }
         for section in self.sections:
             section.plot_on_map(
                 axe=axe,
@@ -548,16 +660,24 @@ class SurfMod(dict):
             )
 
         for pt in self.sup_interp_points.points.geoms:
-            axe.plot(pt.coords[0][0], pt.coords[0][1], **control_points_properties)
+            axe.plot(
+                pt.coords[0][0], pt.coords[0][1], **control_points_properties
+            )
 
         if plot_interp_points:
             for pt in self.interp_points.points.geoms:
-                axe.plot(pt.coords[0][0], pt.coords[0][1], **interp_points_properties)
+                axe.plot(
+                    pt.coords[0][0],
+                    pt.coords[0][1],
+                    **interp_points_properties,
+                )
 
         return fig, axe
 
 
 if __name__ == "__main__":
-    folder_shapefiles = "/home/peruzzetto/Documents/martinique/qgis/shapefiles/"
+    folder_shapefiles = (
+        "/home/peruzzetto/Documents/martinique/qgis/shapefiles/"
+    )
     shapefile = os.path.join(folder_shapefiles, "cliff_sections.shp")
     surfmod = SurfMod(np.ones((2, 3)), mask=np.ones((2, 3)))

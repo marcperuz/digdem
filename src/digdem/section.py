@@ -31,7 +31,7 @@ class SectionPoints:
                 linear_geom = args[0]
                 self.line = linear_geom
                 points = args[1]
-                if isinstance(points,geom.LineString):
+                if isinstance(points, geom.LineString):
                     points = geom.MultiPoint(points.coords[:])
 
                 if isinstance(points, geom.MultiPoint):
@@ -46,7 +46,9 @@ class SectionPoints:
                     self.pos = points
                     self.points = geom.MultiPoint(
                         [
-                            linear_geom.interpolate(s, normalized=self.normalized)
+                            linear_geom.interpolate(
+                                s, normalized=self.normalized
+                            )
                             for s in points
                         ]
                     )
@@ -105,7 +107,9 @@ class SectionPoints:
         tmp = np.array(self.pos)
         ind = np.argwhere((tmp > posmin) & (tmp < posmax))
         if len(ind) > 0:
-            self.points = geom.MultiPoint([self.points.geoms[i[0]] for i in ind])
+            self.points = geom.MultiPoint(
+                [self.points.geoms[i[0]] for i in ind]
+            )
             self.pos = [self.pos[i[0]] for i in ind]
             if len(self.z) > 1:
                 self.z = [self.z[i[0]] for i in ind]
@@ -126,7 +130,11 @@ class SectionPoints:
             if type(point) in [float, int, np.float32, np.float64]:
                 pos2.append(point)
                 points2.append(
-                    geom.Point(self.line.interpolate(point, normalized=self.normalized))
+                    geom.Point(
+                        self.line.interpolate(
+                            point, normalized=self.normalized
+                        )
+                    )
                 )
             elif point.isinstance(SectionPoints):
                 try:
@@ -143,7 +151,8 @@ class SectionPoints:
                     point = [point]
                 points2 = points2 + [pp for pp in point]
                 pos2 = pos2 + [
-                    self.line.project(pp, normalized=self.normalized) for pp in point
+                    self.line.project(pp, normalized=self.normalized)
+                    for pp in point
                 ]
         self.pos = self.pos + pos2
         self.points = geom.MultiPoint([pp for pp in self.points] + points2)
@@ -176,7 +185,9 @@ class Section:
         elif isinstance(points, list):
             self.line = geom.LineString(points)
         elif isinstance(points, np.ndarray):
-            tmp = [(points[i, 0], points[i, 1]) for i in range(points.shape[0])]
+            tmp = [
+                (points[i, 0], points[i, 1]) for i in range(points.shape[0])
+            ]
             self.line = geom.LineString(tmp)
 
         self.name = name
@@ -224,7 +235,9 @@ class Section:
                     "orientation not set, must be either 'S-N', 'N-S', 'W-E' or 'E-W'"
                 )
             if reverse:
-                self.line = shapely.ops.substring(self.line, self.line.length, 0)
+                self.line = shapely.ops.substring(
+                    self.line, self.line.length, 0
+                )
 
     def set_extreme_points_names(self, sep=None):
         if sep is None:
@@ -246,7 +259,9 @@ class Section:
             )
             self.filter_control_points()
             if self.fz_old is not None and len(self.extent.pos) > 0:
-                coords = np.array(geom.LineString(self.extent.points.geoms).coords)
+                coords = np.array(
+                    geom.LineString(self.extent.points.geoms).coords
+                )
                 self.extent.z = list(
                     self.fz_old(coords[:, 0], coords[:, 1], grid=False)
                 )
@@ -322,7 +337,9 @@ class Section:
             else:
                 pos1 = 0
                 pos2 = self.line.length
-            pos = list(np.arange(pos1, pos2 + self.d_interp / 2, self.d_interp))
+            pos = list(
+                np.arange(pos1, pos2 + self.d_interp / 2, self.d_interp)
+            )
             if pos[-1] != pos2:
                 pos.append(pos2)
             if self.interp_spline is None:
@@ -355,24 +372,28 @@ class Section:
         if old_topo_properties is None:
             old_topo_properties = {"lw": 2, "color": "k", "linestyle": "-"}
         if new_topo_properties is None:
-            new_topo_properties = {"lw": 2, "color": "r", "linestyle": "-"}
+            new_topo_properties = {
+                "lw": 2,
+                "color": [0.5, 0.5, 0.5],
+                "linestyle": "-",
+            }
 
         if extent_properties is None:
             extent_properties = {
                 "linestyle": "None",
                 "marker": "o",
-                "ms": 10,
-                "color": "g",
-                "mfc": "g",
+                "ms": 6,
+                "mec": "black",
+                "mfc": "white",
             }
 
         if control_points_properties is None:
             control_points_properties = {
                 "linestyle": "None",
                 "marker": "o",
-                "ms": 10,
-                "color": "b",
-                "mfc": "b",
+                "ms": 6,
+                "mec": "black",
+                "mfc": [0.5, 0.5, 0.5],
             }
 
         pos = np.linspace(0, self.line.length, npos)
@@ -380,7 +401,9 @@ class Section:
         coords = np.array(pts.coords)
 
         if self.extent is not None and len(self.extent.pos) > 0:
-            ind = np.argwhere((pos >= self.extent.pos[0]) & (pos <= self.extent.pos[1]))
+            ind = np.argwhere(
+                (pos >= self.extent.pos[0]) & (pos <= self.extent.pos[1])
+            )
             ind = np.squeeze(ind)
         elif len(self.control_points.pos) > 1:
             ind = np.argwhere(
@@ -403,10 +426,13 @@ class Section:
 
             def evaluate_new_topo(*args):
                 if fz_new is None:
-                    out = scipy.interpolate.splev(pos[ind], self.interp_spline, der=0)
+                    out = scipy.interpolate.splev(
+                        pos[ind], self.interp_spline, der=0
+                    )
                 else:
                     out = fz_new(
-                        coords[ind[0] : ind[-1] + 1, 0], coords[ind[0] : ind[-1] + 1, 1]
+                        coords[ind[0] : ind[-1] + 1, 0],
+                        coords[ind[0] : ind[-1] + 1, 1],
                     )
                     if old_topo is not None:
                         if comp_surf == "min":
@@ -431,7 +457,9 @@ class Section:
                 if len(self.extent.pos) > 1:
                     for i in [0, -1]:
                         axe.plot(
-                            self.extent.pos[i], self.extent.z[i], **extent_properties
+                            self.extent.pos[i],
+                            self.extent.z[i],
+                            **extent_properties,
                         )
 
             for i in range(len(self.control_points.points.geoms)):
@@ -442,7 +470,9 @@ class Section:
                 )
 
             for key in self.intersection_points:
-                for i in range(len(self.intersection_points[key].points.geoms)):
+                for i in range(
+                    len(self.intersection_points[key].points.geoms)
+                ):
                     axe.plot(
                         self.intersection_points[key].pos[i],
                         self.intersection_points[key].z[i],
@@ -465,8 +495,8 @@ class Section:
         figsize=None,
         point_name_dist=None,
         npts=2,
-        section_properties={},
-        text_properties={},
+        section_properties=None,
+        text_properties=None,
         control_points_properties=None,
     ):
         xx, yy = self.line.coords.xy
@@ -474,7 +504,7 @@ class Section:
             control_points_properties = {
                 "linestyle": "None",
                 "marker": "o",
-                "ms": 7,
+                "ms": 5,
                 "color": "k",
                 "mfc": "k",
             }
@@ -484,16 +514,22 @@ class Section:
         # else:
         #     fig = axe.figure
 
+        if section_properties is None:
+            section_properties = dict()
         axe.plot(xx, yy, **section_properties)
         if len(self.control_points.points.geoms) > 0:
             for p in self.control_points.points.geoms:
-                axe.plot(p.coords[0][0], p.coords[0][1], **control_points_properties)
+                axe.plot(
+                    p.coords[0][0], p.coords[0][1], **control_points_properties
+                )
 
         for key in self.intersection_points:
             if len(self.intersection_points[key].points.geoms) > 0:
                 for p in self.intersection_points[key].points.geoms:
                     axe.plot(
-                        p.coords[0][0], p.coords[0][1], **control_points_properties
+                        p.coords[0][0],
+                        p.coords[0][1],
+                        **control_points_properties,
                     )
 
         if len(self.extreme_points_names) > 0:
@@ -501,7 +537,10 @@ class Section:
                 point_name_dist = self.point_name_dist
 
             if point_name_dist is None:
-                point_name_dist = 50
+                point_name_dist = self.line.length / 15
+
+            if text_properties is None:
+                text_properties = dict()
 
             for i in [0, 1]:
                 xtmp = [xx[int((1 - 2 * npts) * i + npts - 1)], xx[-i]]
