@@ -7,7 +7,15 @@
 ## Description <a name="description"></a>
 
 `digdem` package can be used to modify semi-automatically Digital Elevation Models (or any raster data) in specific regions, using a limited number of
-control points and control profiles.
+control points and control profiles. It follows the following steps:
+
+1. Create instance of `SurfMod` with initial DEM, and an array specifying where the DEM will be modified;
+2. Generate controlling sections (typically longitudinal and transverse sections), and specify the new altitude of their intersections if any;
+3. Add additional control points along the sections by specifying their altitude, and if needed additional control points located within the mask but not on the sections;
+4. `digdem` then interpolates the new DEM within the mask by:
+   - Interpolating splines along each section
+   - Interpolating the new DEM with Radial Basis Functions, using points along the splines, points on the contour of the mask, and if applicable additional control points within the mask.
+5. Plot the new topography
 
 Note that `digdem` is still under development, thus only minimal documentation is available at the moment, and testing is underway.
 Contributions are feedback are most welcome. 
@@ -78,4 +86,4 @@ python -m pip install .
 
 ## Quick start <a name="quick-start"></a>
 
-To be completed
+See jupyter notebooks in examples.
