@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "digdem"
-version = "0.1.1"
+version = "v0.1.1.rc4"
 description = "Semi-automated modification of Digital Elevation Models"
 readme = "README.md"
 authors = [{ name = "Marc Peruzzetto", email = "m.peruzzetto@brgm.fr" }]
