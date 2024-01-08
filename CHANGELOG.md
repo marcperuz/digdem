@@ -4,6 +4,10 @@
 
 First stable release to pypi
 
+## [v0.1.3-rc1](https://github.com/marcperuz/digdem/releases/tag/v0.1.3-rc1) - 2024-01-08 14:12:25
+
+*No description*
+
 ## [v0.1.2](https://github.com/marcperuz/digdem/releases/tag/v0.1.2) - 2024-01-08 13:29:03
 
 First stable release to pypi
