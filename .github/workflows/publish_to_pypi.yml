@@ -1,6 +1,6 @@
 name: Publish Python 🐍 distribution 📦 to PyPI and TestPyPI
 
-on: [published]
+on: [release]
 
 jobs:
   update-version-number:
