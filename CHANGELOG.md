@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [v0.1.1.rc7](https://github.com/marcperuz/digdem/releases/tag/v0.1.1.rc7) - 2024-01-08 12:55:39
+
+*No description*
+
 ## [v0.1.1.rc6](https://github.com/marcperuz/digdem/releases/tag/v0.1.1.rc6) - 2024-01-08 12:50:19
 
 test for publishing workflow
