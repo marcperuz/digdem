@@ -29,6 +29,8 @@ jobs:
 
   update-version-number:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     if: startsWith(github.ref, 'refs/tags/')  # only run if tag
     needs:
     - build
@@ -56,7 +58,7 @@ jobs:
     name: Publish Python 🐍 distribution 📦 to TestPyPI
     if: startsWith(github.ref, 'refs/tags/')  # only publish to testpyPI on tag pushes
     needs:
-    - build
+    - update-version-number
     runs-on: ubuntu-latest
 
     environment:
@@ -82,7 +84,6 @@ jobs:
       Publish Python 🐍 distribution 📦 to PyPI
     if: github.event_name == 'release' && '!github.event.prerelease'
     needs:
-    - build
     - publish-to-testpypi
     runs-on: ubuntu-latest
     environment:
