@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [v0.1.4](https://github.com/marcperuz/digdem/releases/tag/v0.1.4) - 2024-01-08 15:23:55
+
+Stable release to github
+
 ## [v0.1.3](https://github.com/marcperuz/digdem/releases/tag/v0.1.3) - 2024-01-08 14:01:34
 
 First stable release to pypi
