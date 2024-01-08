@@ -125,3 +125,7 @@ new_dem["long"].plot()
 new_dem["trans"].plot()
 
 plt.show()
+
+new_dem.add_sup_interp_points([0.4, 0.6], [0.55, 0.45], [0.6, 0.4])
+new_dem.update_interpolation()
+new_dem.plot()

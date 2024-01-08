@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
 Created on Thu Oct  3 13:55:55 2019
@@ -47,6 +46,7 @@ class InterpPoints:
         return np.array(geom.LineString(self.points.geoms).coords)
 
     def add(self, *args):
+        args = list(args)
         for i in range(len(args)):
             if not isinstance(args[i], list):
                 args[i] = [args[i]]
@@ -59,7 +59,7 @@ class InterpPoints:
             z = args[1]
             points = args[0]
         self.z = self.z + z
-        self.points = geom.MultiPoint(list(self.points) + points)
+        self.points = geom.MultiPoint(list(self.points.geoms) + points)
 
     def unique(self):
         xy = self.xy
