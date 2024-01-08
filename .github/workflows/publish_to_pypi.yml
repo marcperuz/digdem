@@ -3,7 +3,7 @@ name: Publish Python 🐍 distribution 📦 to PyPI and TestPyPI
 on: [published]
 
 jobs:
-update-version-number:
+  update-version-number:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -31,7 +31,8 @@ update-version-number:
   build:
     name: Build distribution 📦
     runs-on: ubuntu-latest
-
+    needs:
+    - update-version-number
     steps:
     - uses: actions/checkout@v4
     - name: Set up Python
