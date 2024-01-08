@@ -39,6 +39,9 @@ jobs:
     - update-version-number
     steps:
     - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        ref: master
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
