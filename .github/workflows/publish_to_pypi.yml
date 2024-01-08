@@ -26,6 +26,7 @@ jobs:
           sed -i "s+version = $OLD_VERSION+version = $NEW_VERSION+g" pyproject.toml
       - name: Commit Changes
         run: |
+          git pull origin master
           git config user.name "$GITHUB_ACTOR"
           git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
           git commit -a -m "chore(pyproject) update version number to new_version"
