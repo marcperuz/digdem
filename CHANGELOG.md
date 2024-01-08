@@ -4,6 +4,10 @@
 
 test for package publication
 
+## [v0.1.1.rc9](https://github.com/marcperuz/digdem/releases/tag/v0.1.1.rc9) - 2024-01-08 13:27:40
+
+test for version release
+
 ## [v0.1.1.rc7](https://github.com/marcperuz/digdem/releases/tag/v0.1.1.rc7) - 2024-01-08 12:55:39
 
 *No description*
