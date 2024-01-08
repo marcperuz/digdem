@@ -8,61 +8,9 @@ Stable release to github
 
 First stable release to pypi
 
-## [v0.1.3.rc4](https://github.com/marcperuz/digdem/releases/tag/v0.1.3.rc4) - 2024-01-08 15:22:56
-
-*No description*
-
-## [v0.1.3.rc3](https://github.com/marcperuz/digdem/releases/tag/v0.1.3.rc3) - 2024-01-08 14:19:21
-
-*No description*
-
-## [v0.1.3-rc2](https://github.com/marcperuz/digdem/releases/tag/v0.1.3-rc2) - 2024-01-08 14:17:58
-
-*No description*
-
-## [v0.1.3-rc1](https://github.com/marcperuz/digdem/releases/tag/v0.1.3-rc1) - 2024-01-08 14:12:25
-
-*No description*
-
 ## [v0.1.2](https://github.com/marcperuz/digdem/releases/tag/v0.1.2) - 2024-01-08 13:29:03
 
 First stable release to pypi
-
-## [v0.1.1rc8](https://github.com/marcperuz/digdem/releases/tag/v0.1.1rc8) - 2024-01-08 13:06:13
-
-test for package publication
-
-## [v0.1.1.rc9](https://github.com/marcperuz/digdem/releases/tag/v0.1.1.rc9) - 2024-01-08 13:27:40
-
-test for version release
-
-## [v0.1.1.rc7](https://github.com/marcperuz/digdem/releases/tag/v0.1.1.rc7) - 2024-01-08 12:55:39
-
-*No description*
-
-## [v0.1.1.rc6](https://github.com/marcperuz/digdem/releases/tag/v0.1.1.rc6) - 2024-01-08 12:50:19
-
-test for publishing workflow
-
-## [v0.1.1.rc5](https://github.com/marcperuz/digdem/releases/tag/v0.1.1.rc5) - 2024-01-08 12:43:49
-
-test for publish workflow
-
-## [v0.1.1.rc4](https://github.com/marcperuz/digdem/releases/tag/v0.1.1.rc4) - 2024-01-08 12:13:19
-
-*No description*
-
-## [v.0.1.1rc3](https://github.com/marcperuz/digdem/releases/tag/v.0.1.1rc3) - 2024-01-08 12:10:04
-
-test for publishing workflow
-
-## [v.0.1.1rc2](https://github.com/marcperuz/digdem/releases/tag/v.0.1.1rc2) - 2024-01-08 12:02:46
-
-update-version-number
-
-## [v.0.1.1rc1](https://github.com/marcperuz/digdem/releases/tag/v.0.1.1rc1) - 2024-01-08 11:37:36
-
-Testing publishing workflow with automatic version update
 
 ## [v0.1.1b](https://github.com/marcperuz/digdem/releases/tag/v0.1.1b) - 2024-01-05 14:59:19
 
