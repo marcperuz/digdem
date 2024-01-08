@@ -48,6 +48,7 @@ jobs:
         python-version: "3.x"
     - name: Install pypa/build
       run: >-
+        git pull origin master
         python3 -m
         pip install
         build
