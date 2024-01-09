@@ -615,10 +615,10 @@ class SurfMod(dict):
     def add_sup_interp_points(self, *args):
         self.sup_interp_points.add(*args)
 
-    def save_to_raster(self, surf_name, file_out, fmt=None, **kwargs):
-        if surf_name == "old":
+    def save_to_raster(self, file_out, which="new", fmt=None, **kwargs):
+        if which == "old":
             z = self.surf_old.copy()
-        elif surf_name == "new":
+        elif which == "new":
             z = self.surf_new.copy()
         z = np.flip(z.T, axis=0)
         digdem.gis.write_raster(
