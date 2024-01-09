@@ -22,9 +22,9 @@ def read_raster(file):
 
 def write_raster(x, y, z, file_out, fmt=None, **kwargs):
     # File format read from file_out overrides fmt
-    fmt = file_out.split(".")
-    if len(fmt) > 1:
-        fmt = fmt[-1]
+    fmt_from_file = file_out.split(".")
+    if len(fmt_from_file) > 1:
+        fmt = fmt_from_file[-1]
     else:
         file_out = file_out + "." + fmt
 
@@ -95,7 +95,7 @@ def read_ascii(file):
     return x, y, dem
 
 
-def write_tiff(x, y, z, file_out, **kwargs):
+def write_tiff(x, y, z, file_out, raster_ref=None, **kwargs):
     """
     Write raster as tif file
 
@@ -120,20 +120,24 @@ def write_tiff(x, y, z, file_out, **kwargs):
 
     if "driver" not in kwargs:
         kwargs["driver"] = "GTiff"
-    res = (x[-1] - x[0]) / (len(x) - 1)
-    transform = Affine.translation(
-        x[0] - res / 2, y[-1] - res / 2
-    ) * Affine.scale(res, -res)
-    with rasterio.open(
-        file_out,
-        "w",
-        height=z.shape[0],
-        width=z.shape[1],
-        count=1,
-        dtype=z.dtype,
-        transform=transform,
-        **kwargs
-    ) as dst:
+
+    if raster_ref is None:
+        res = (x[-1] - x[0]) / (len(x) - 1)
+        transform = Affine.translation(
+            x[0] - res / 2, y[-1] - res / 2
+        ) * Affine.scale(res, -res)
+        profile = dict(
+            height=z.shape[0],
+            width=z.shape[1],
+            count=1,
+            dtype=z.dtype,
+            transform=transform,
+            **kwargs
+        )
+    else:
+        profile = rasterio.open(raster_ref).profile
+
+    with rasterio.open(file_out, "w", **profile) as dst:
         dst.write(z, 1)
 
 
