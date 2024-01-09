@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## [v0.2.0](https://github.com/marcperuz/digdem/releases/tag/v0.2.0) - 2024-01-09 16:02:06
+
+New features and examples to work with raster and input text files
+
 ## [v0.1.4.rc1](https://github.com/marcperuz/digdem/releases/tag/v0.1.4.rc1) - 2024-01-09 15:57:50
 
 New features with examples with input rasters and text files
