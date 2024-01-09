@@ -176,6 +176,7 @@ def rasterize_shapefile(
     resolution=None,
 ):
     import rasterio
+    import rasterio.features
 
     if isinstance(shapefile, str):
         shapefile = gpd.read_file(shapefile)
