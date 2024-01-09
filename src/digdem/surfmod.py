@@ -5,20 +5,22 @@ Created on Thu Oct  3 13:55:55 2019
 @author: peruzzetto
 """
 
-import shapely.geometry as geom
-import digdem.plot
-import digdem.gis
-import numpy as np
-import matplotlib.pyplot as plt
-import os
-import geopandas as gpd
+import itertools
 import warnings
 import logging
+import scipy.interpolate
+
+import shapely.geometry as geom
+import numpy as np
+import matplotlib.pyplot as plt
+import geopandas as gpd
+
 from collections import defaultdict
 from digdem.section import Section
-import scipy.interpolate
-import itertools
 from scipy.signal import convolve2d
+
+import digdem.plot
+import digdem.gis
 
 
 class Tree(defaultdict):

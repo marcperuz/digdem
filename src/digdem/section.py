@@ -6,13 +6,15 @@ Created on Fri Oct  4 21:16:48 2019
 @author: peruzzetto
 """
 
-import shapely.geometry as geom
 import shapely
-import numpy as np
-import matplotlib.pyplot as plt
 import warnings
 import copy
 import scipy.interpolate
+
+import shapely.geometry as geom
+import numpy as np
+import matplotlib.pyplot as plt
+
 
 # class Extent():
 #    def __init__(self,coords=None,pos=None):
