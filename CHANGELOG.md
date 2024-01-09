@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## [v0.2.1](https://github.com/marcperuz/digdem/releases/tag/v0.2.1) - 2024-01-09 16:32:11
+
+Fix dependencies requirements
+
+### Bug Fixes
+
+- pyproject:
+  - add rasterio dependency ([af6938e](https://github.com/marcperuz/digdem/commit/af6938e9dbf9d0a8ce4554b200dbd1ab2dce40cd))
+
 ## [v0.2.0](https://github.com/marcperuz/digdem/releases/tag/v0.2.0) - 2024-01-09 16:02:06
 
 New features and examples to work with raster and input text files
