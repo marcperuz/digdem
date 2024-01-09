@@ -83,7 +83,10 @@ class InterpPoints:
 class SurfMod(dict):
     @staticmethod
     def read_shapefile(
-        shapefile, direction_field_name="dir", orientation_field_name="ori"
+        shapefile,
+        direction_field_name="dir",
+        orientation_field_name="ori",
+        normalized=False,
     ):
         sections = []
         try:
@@ -105,6 +108,7 @@ class SurfMod(dict):
                         name,
                         direction=direction,
                         orientation=orientation,
+                        normalized=normalized,
                     )
                 )
         except AssertionError:
@@ -283,7 +287,7 @@ class SurfMod(dict):
         return self._sections
 
     @sections.setter
-    def sections(self, sections):
+    def sections(self, sections, **kwargs):
         if isinstance(sections, list):
             prof = []
             for section in sections:
@@ -291,7 +295,8 @@ class SurfMod(dict):
                     prof.append(section)
         elif isinstance(sections, str):
             if sections[-4:] == ".shp":
-                prof = SurfMod.read_shapefile(sections)
+                kwargs["normalized"] = self.normalized
+                prof = SurfMod.read_shapefile(sections, **kwargs)
             else:
                 warnings.warn(
                     "sections initiation : file format not recognized"
