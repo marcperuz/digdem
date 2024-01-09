@@ -204,7 +204,7 @@ class Section:
         self.extreme_points_names = []
         self.name_sep = name_sep
         self.point_name_dist = point_name_dist
-        self.d_interp = dinterp
+        self.dinterp = dinterp
         self.interp_points = SectionPoints()
 
         self.set_extreme_points_names()
@@ -337,9 +337,7 @@ class Section:
             else:
                 pos1 = 0
                 pos2 = self.line.length
-            pos = list(
-                np.arange(pos1, pos2 + self.d_interp / 2, self.d_interp)
-            )
+            pos = list(np.arange(pos1, pos2 + self.dinterp / 2, self.dinterp))
             if pos[-1] != pos2:
                 pos.append(pos2)
             if self.interp_spline is None:
