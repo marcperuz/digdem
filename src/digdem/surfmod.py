@@ -680,6 +680,14 @@ class SurfMod(dict):
             )
 
         if plot_interp_points:
+            if interp_points_properties is None:
+                interp_points_properties = {
+                    "linestyle": "None",
+                    "marker": "o",
+                    "ms": 3,
+                    "mfc": "w",
+                    "mec": "k",
+                }
             for pt in self.interp_points.points.geoms:
                 axe.plot(
                     pt.coords[0][0],
@@ -688,11 +696,3 @@ class SurfMod(dict):
                 )
 
         return fig, axe
-
-
-if __name__ == "__main__":
-    folder_shapefiles = (
-        "/home/peruzzetto/Documents/martinique/qgis/shapefiles/"
-    )
-    shapefile = os.path.join(folder_shapefiles, "cliff_sections.shp")
-    surfmod = SurfMod(np.ones((2, 3)), mask=np.ones((2, 3)))
