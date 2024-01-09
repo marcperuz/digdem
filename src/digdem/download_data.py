@@ -21,8 +21,7 @@ def import_rainier_data(folder_out=None):
     )
     r = requests.get(url_base + "raster_rainier.tif")
     with open(file_save, "wb") as f:
-        for morceau in r.iter_content(chunk_size=128):
-            f.write(morceau)
+        f.write(r.content)
 
     for fmt in ["shp", "dbf", "shx", "prj"]:
         for file in ["sections", "scar"]:
@@ -30,3 +29,9 @@ def import_rainier_data(folder_out=None):
             r = requests.get(url_base + "{}.{}".format(file, fmt))
             with open(file_save, "wb") as f:
                 f.write(r.content)
+
+    for text_file in ["sections_control_points.txt", "sup_interp_points.txt"]:
+        file_save = os.path.join(folder_out, text_file)
+        r = requests.get(url_base + text_file)
+        with open(file_save, "w") as f:
+            f.write(r.text)
