@@ -10,12 +10,28 @@ import numpy as np
 import matplotlib.pyplot as plt
 import matplotlib.colors as mcolors
 
-BOLD_CONTOURS_INTV = [0.1, 0.2, 0.5, 1, 2.0, 5, 10, 20, 50, 100, 200, 500, 1000]
+BOLD_CONTOURS_INTV = [
+    0.1,
+    0.2,
+    0.5,
+    1,
+    2.0,
+    5,
+    10,
+    20,
+    50,
+    100,
+    200,
+    500,
+    1000,
+]
 NB_THIN_CONTOURS = 10
 NB_BOLD_CONTOURS = 3
 
 
-def get_contour_intervals(zmin, zmax, nb_bold_contours=None, nb_thin_contours=None):
+def get_contour_intervals(
+    zmin, zmax, nb_bold_contours=None, nb_thin_contours=None
+):
     if nb_thin_contours is None:
         nb_thin_contours = NB_THIN_CONTOURS
     if nb_bold_contours is None:
@@ -43,7 +59,7 @@ def plot_topo(
     z,
     x,
     y,
-    indexing='ij',
+    indexing="ij",
     contour_step=None,
     nlevels=None,
     level_min=None,
@@ -121,14 +137,16 @@ def plot_topo(
     dy = y[1] - y[0]
     im_extent = [x[0] - dx / 2, x[-1] + dx / 2, y[0] - dy / 2, y[-1] + dy / 2]
     ls = mcolors.LightSource(azdeg=azdeg, altdeg=altdeg)
-    
-    if indexing == 'ij':
-        z = np.flip(z, axis=1).T
+
+    if indexing == "ij":
+        z = np.flip(z.T, axis=0)
 
     auto_bold_intv = None
 
     if nlevels is None and contour_step is None:
-        auto_bold_intv, contour_step = get_contour_intervals(np.nanmin(z), np.nanmax(z))
+        auto_bold_intv, contour_step = get_contour_intervals(
+            np.nanmin(z), np.nanmax(z)
+        )
 
     if level_min is None:
         if contour_step is not None:
@@ -150,7 +168,9 @@ def plot_topo(
     axe.set_aspect("equal")
 
     if uniform_grey is None:
-        shaded_topo = ls.hillshade(z, vert_exag=vert_exag, dx=dx, dy=dy, fraction=1)
+        shaded_topo = ls.hillshade(
+            z, vert_exag=vert_exag, dx=dx, dy=dy, fraction=1
+        )
     else:
         shaded_topo = np.ones(z.shape) * uniform_grey
     shaded_topo[z == ndv] = np.nan
@@ -167,7 +187,12 @@ def plot_topo(
     if contours_prop is None:
         contours_prop = dict(alpha=0.5, colors="k", linewidths=0.5)
     axe.contour(
-        x, y, np.flip(z, axis=0), extent=im_extent, levels=levels, **contours_prop
+        x,
+        y,
+        np.flip(z, axis=0),
+        extent=im_extent,
+        levels=levels,
+        **contours_prop,
     )
 
     if contours_bold_prop is None:
@@ -175,7 +200,9 @@ def plot_topo(
 
     if step_contour_bold == "auto":
         if auto_bold_intv is None:
-            auto_bold_intv, _ = get_contour_intervals(np.nanmin(z), np.nanmax(z))
+            auto_bold_intv, _ = get_contour_intervals(
+                np.nanmin(z), np.nanmax(z)
+            )
         step_contour_bold = auto_bold_intv
 
     if step_contour_bold > 0:

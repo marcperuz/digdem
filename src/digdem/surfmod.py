@@ -162,8 +162,8 @@ class SurfMod(dict):
             )
             self.indexing = indexing
             if indexing == "raster":
-                surf_old = np.flip(surf_old, axis=1).T
-                mask = np.flip(mask, axis=1).T
+                surf_old = np.flip(surf_old, axis=0).T
+                mask = np.flip(mask, axis=0).T
             elif indexing == "ij":
                 pass
 
@@ -626,7 +626,7 @@ class SurfMod(dict):
             self.surf_new,
             self.xaxis,
             self.yaxis,
-            indexing=self.indexing,
+            # indexing=self.indexing,
             axe=axe,
             **kwargs,
         )
