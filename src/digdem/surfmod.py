@@ -83,10 +83,6 @@ class SurfMod(dict):
             # print(shapefile)
             for row in shp_reader.index:
                 line = shp_reader.loc[row, "geometry"]
-                npoints = line.GetPointCount()
-                points = []
-                for i in range(npoints):
-                    points.append(line.GetPoint(i))
                 direction = None
                 orientation = None
                 if direction_field_name in shp_reader.columns:
@@ -96,7 +92,7 @@ class SurfMod(dict):
                 name = shp_reader.loc[row, "name"]
                 sections.append(
                     Section(
-                        points,
+                        line,
                         name,
                         direction=direction,
                         orientation=orientation,
