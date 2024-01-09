@@ -29,6 +29,14 @@ class Tree(defaultdict):
 
 class InterpPoints:
     def __init__(self, *args):
+        if len(args) == 1:
+            # If only one argument, it is assumed to be a text file containing
+            # points coordinates separated by spaces and three columns
+            # for x, y and z
+            data = np.loadtxt(args[0])
+            if data.ndim == 1:
+                data = data[np.newaxis, :]
+            args = [list(data[:, 0]), list(data[:, 1]), list(data[:, 2])]
         if len(args) == 2:
             self.points = args[0]
             self.z = args[1]
