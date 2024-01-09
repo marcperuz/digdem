@@ -7,6 +7,7 @@ Created on Thu Oct  3 13:55:55 2019
 
 import shapely.geometry as geom
 import digdem.plot
+import digdem.gis
 import numpy as np
 import matplotlib.pyplot as plt
 import os
@@ -600,6 +601,16 @@ class SurfMod(dict):
 
     def add_sup_interp_points(self, *args):
         self.sup_interp_points.add(*args)
+
+    def save_to_raster(self, surf_name, file_out, fmt=None, **kwargs):
+        if surf_name == "old":
+            z = self.surf_old.copy()
+        elif surf_name == "new":
+            z = self.surf_new.copy()
+        z = np.flip(z.T, axis=0)
+        digdem.gis.write_raster(
+            self.xaxis, self.yaxis, z, file_out, fmt=fmt, **kwargs
+        )
 
     def plot(
         self,
