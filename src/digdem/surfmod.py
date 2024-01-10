@@ -454,11 +454,17 @@ class SurfMod(dict):
             plt.switch_backend("Agg")
             fig, axe = plt.subplots(1, 1)
             cs = axe.contour(x, y, mask.T, [0.5])
-            p = cs.collections[0].get_paths()
+            try:
+                # Correct formulation for Matplotlib >=3.8
+                p = cs.get_paths()
+            except AttributeError:
+                # Ensure backwards compatibility for older versions of matplotlib
+                p = cs.collections[0].get_paths()
             assert len(p) > 0, "mask is either all 1 or all 0"
             p = p[0]
             self.contour = geom.Polygon(p.vertices)
             self.update_sections_extents()
+            plt.close("all")
             plt.switch_backend(backend)
 
         except ValueError:
