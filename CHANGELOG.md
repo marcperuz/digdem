@@ -1,5 +1,75 @@
 # CHANGELOG
 
+## [v0.2.1](https://github.com/marcperuz/digdem/releases/tag/v0.2.1) - 2024-01-09 16:32:11
+
+Fix dependencies requirements
+
+### Bug Fixes
+
+- pyproject:
+  - add rasterio dependency ([af6938e](https://github.com/marcperuz/digdem/commit/af6938e9dbf9d0a8ce4554b200dbd1ab2dce40cd))
+
+## [v0.2.0](https://github.com/marcperuz/digdem/releases/tag/v0.2.0) - 2024-01-09 16:02:06
+
+New features and examples to work with raster and input text files
+
+## [v0.1.4.rc1](https://github.com/marcperuz/digdem/releases/tag/v0.1.4.rc1) - 2024-01-09 15:57:50
+
+New features with examples with input rasters and text files
+
+### Feature
+
+- examples:
+  - add example scripts for Mount Rainier ([ba07db7](https://github.com/marcperuz/digdem/commit/ba07db7fcef5ef6062f64939f64d98e33e54f03b))
+
+- surfmod:
+  - change default behaviour of save_to_raster ([70d4388](https://github.com/marcperuz/digdem/commit/70d43884bdb71f6b699dc1e6d0587c2d093ef868))
+  - add feature to read InterpPoints from text file ([07c73ce](https://github.com/marcperuz/digdem/commit/07c73ce3c2ee0d88fff028d9d501f2ee279504a3))
+  - add method to save surf to raster ([f286a53](https://github.com/marcperuz/digdem/commit/f286a538819fc2468510b3fb7ebfda2258bc7e23))
+
+- data:
+  - update unput files for rainier example ([f530174](https://github.com/marcperuz/digdem/commit/f5301744702f98433d5e2d2ea7fdc34c199b2fcc))
+  - update function to download rainier data ([d4b1700](https://github.com/marcperuz/digdem/commit/d4b17000ff5ee13bbeb893372421e97a308e9944))
+  - update data for rainier example ([a630c2c](https://github.com/marcperuz/digdem/commit/a630c2cbb37f7e7445d1312a25553d798b152fc8))
+  - add function to dowload sample data ([1e19e4a](https://github.com/marcperuz/digdem/commit/1e19e4a380f996ca42de92fb9ab8312b52ecd16f))
+  - add data for example with real topo ([99f824b](https://github.com/marcperuz/digdem/commit/99f824b4b0f60f097cd0e40fc092c322ef10d331))
+
+- gis:
+  - add feature for reference raster in write_tiff ([5838628](https://github.com/marcperuz/digdem/commit/58386286ad0d6cdb90ef3ccdb9f81706e4912e61))
+  - add gis module ([1467ef6](https://github.com/marcperuz/digdem/commit/1467ef685695d891c5fbe41746d9542eab0ff8ea))
+
+### Bug Fixes
+
+- section:
+  - set normalized attribute when reading sections from shapefile ([fc1d2c4](https://github.com/marcperuz/digdem/commit/fc1d2c4e3a6b662e9be29d7e5b81abd75072ede7))
+  - change attribute name for distance between interp_points ([b6c0616](https://github.com/marcperuz/digdem/commit/b6c06163ea7dc6e12539e23066c9bd4cdca1441b))
+
+- plot:
+  - fix bug in kwargs for interp_points plotting ([54fbd8e](https://github.com/marcperuz/digdem/commit/54fbd8e9c625c923a01390ef78360014ce604d0b))
+
+- topo:
+  - fix raster transformation ([275e28f](https://github.com/marcperuz/digdem/commit/275e28ff97ef5e49721eafb0e8a188e9d63e6c15))
+
+- surfmod:
+  - fix bug in section creation with shapefile ([87b7260](https://github.com/marcperuz/digdem/commit/87b7260ae7f589602adca2bde53a8ca6f925e853))
+
+- gis:
+  - correct import ([30a62ab](https://github.com/marcperuz/digdem/commit/30a62ab4090dc19b7259990c14536b6479235562))
+
+- data:
+  - correct projection of shapefiles for rainier example ([9d26c85](https://github.com/marcperuz/digdem/commit/9d26c854b69a6f7e9904e4fd525e2912b6630b1e))
+
+- sup_interp_point:
+  - fix bug in sup coontrol point addition ([06d6102](https://github.com/marcperuz/digdem/commit/06d6102adce8e92393a51d3c38875f216aaec679))
+
+### Documentation
+
+- data:
+  - add README with citation for Mount rainier topographic data ([e4f94f9](https://github.com/marcperuz/digdem/commit/e4f94f910344b5fbfe969bbc5d005d648433c6e7))
+
+- examples:
+  - move examples to a dedicated folder ([13ca8b4](https://github.com/marcperuz/digdem/commit/13ca8b4e715da3b9bee991b30ab28d02f7632c22))
+
 ## [v0.1.4](https://github.com/marcperuz/digdem/releases/tag/v0.1.4) - 2024-01-08 15:23:55
 
 Stable release to github
