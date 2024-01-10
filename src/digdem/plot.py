@@ -141,6 +141,7 @@ def plot_topo(
     if indexing == "ij":
         z = np.flip(z.T, axis=0)
 
+    z[z == ndv] = np.nan
     auto_bold_intv = None
 
     if nlevels is None and contour_step is None:

@@ -658,6 +658,7 @@ class SurfMod(dict):
             self.surf_new,
             self.xaxis,
             self.yaxis,
+            ndv=self.ndv,
             # indexing=self.indexing,
             axe=axe,
             **kwargs,
