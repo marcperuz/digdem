@@ -1,5 +1,25 @@
 # CHANGELOG
 
+## [v0.2.2](https://github.com/marcperuz/digdem/releases/tag/v0.2.2) - 2024-01-10 17:32:58
+
+Minor bugs fix
+
+### Bug Fixes
+
+- plot:
+  - fix issue with ndv value leading to incorrect contour plot ([3bbc9da](https://github.com/marcperuz/digdem/commit/3bbc9dad880ae8171ed5d5e150a76a092ac906c2))
+
+### Refactor
+
+- surfmod:
+  - adapt to future releases of matplotlib ([f6094d6](https://github.com/marcperuz/digdem/commit/f6094d6d3444aca1d55a4d56a40ea0024dc7ec12))
+
+- tests:
+  - add instance of SurfMod as pytest fixture ([628bc72](https://github.com/marcperuz/digdem/commit/628bc727962a3126af5ea75bf288eee08be1ee03))
+
+- examples:
+  - delete examples/synthetic_example.py ([73f3beb](https://github.com/marcperuz/digdem/commit/73f3bebe2d3511d0bd41e7e4b7027d27563333e8))
+
 ## [v0.2.1](https://github.com/marcperuz/digdem/releases/tag/v0.2.1) - 2024-01-09 16:32:11
 
 Fix dependencies requirements
