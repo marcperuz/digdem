@@ -1,9 +1,8 @@
 matplotlib
 numpy
-pandas
 pytest
 rasterio
+geopandas
 requests
-seaborn
 shapely
 scipy
