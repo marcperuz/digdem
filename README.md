@@ -67,7 +67,7 @@ python -m pip install --upgrade pip setuptools wheel
 ### Latest stable realease from PyPi <a name="pypi-install"></a>
 
 ```
-python -m pip install tilupy
+python -m pip install digdem
 ```
 
 ### Development version on from GitHub <a name="source-install"></a>
@@ -75,7 +75,7 @@ python -m pip install tilupy
 Download the GithHub repository [here](https://github.com/marcperuz/digdem), or clone it with
 
 ```
-git clone https://github.com/marcperuz/tilupy.git
+git clone https://github.com/marcperuz/digdem.git
 ```
 
 Open a terminal in the created folder and type:
