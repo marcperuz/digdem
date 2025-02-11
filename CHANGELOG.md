@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## [v0.2.3](https://github.com/marcperuz/digdem/releases/tag/v0.2.3) - 2024-01-16 09:53:41
+
+Documentation corrected/updated with support for Anaconda installation
+
+### Documentation
+
+- README:
+  - update installation information ([3e7f16d](https://github.com/marcperuz/digdem/commit/3e7f16db2ab9fd1161a6ed4b30eed904110606cb))
+  - fix installation ([7201394](https://github.com/marcperuz/digdem/commit/7201394feed9db2371859732581a80282333a5be))
+
 ## [v0.2.2](https://github.com/marcperuz/digdem/releases/tag/v0.2.2) - 2024-01-10 17:32:58
 
 Minor bugs fix

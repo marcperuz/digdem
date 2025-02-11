@@ -22,7 +22,7 @@ Contributions are feedback are most welcome.
 
 ## Installation <a name="installation"></a>
 
-To install `digdem` from GitHub or PyPi, you'll need to have `pip` installed on your computer. `digdem` is not yet available on `conda-forge`. 
+`digdem` can be installed from GitHub, [PyPi](https://pypi.org/project/digdem/) or [Anaconda](https://anaconda.org/conda-forge/digdem). Supposedly stable releases are distributed to PyPi and Anaconda. Distribution to Anaconda is made manually from the PyPi package, thus the last available version on conda-forge may be an older version than the one distributed on PyPi. 
 
 It is strongly recommended to install `digdem` in a virtual environnement dedicated to this package. This can be done with `virtualenv`
 (see the documentation e.g. [here](https://packaging.python.org/en/latest/guides/installing-using-pip-and-virtual-environments/)).
@@ -57,6 +57,21 @@ or equivalently with Mamba :
 mamba create -n digdem pip
 mamba activate digdem
 ```
+### Latest stable release from Anaconda
+
+With Anaconda:
+
+```bash
+conda install digdem
+```
+
+or equivalently with Mamba: 
+
+```bash
+mamba install digdem
+```
+
+### Latest stable realease from PyPi <a name="pypi-install"></a>
 
 Before installing with `pip`, make sure `pip`, `steuptools` and `wheel` are up to date
 
@@ -64,7 +79,7 @@ Before installing with `pip`, make sure `pip`, `steuptools` and `wheel` are up t
 python -m pip install --upgrade pip setuptools wheel
 ```
 
-### Latest stable realease from PyPi <a name="pypi-install"></a>
+Then run
 
 ```
 python -m pip install digdem
@@ -83,6 +98,14 @@ Open a terminal in the created folder and type:
 ```
 python -m pip install .
 ```
+
+If you want to developp and test `digdem` and have your modification directly taken into account when running your code, use:
+
+```
+python -m pip install -e .
+```
+
+Alternatively, if you don't want to install the package with pip, you can also add the `src` folder to your Python path.
 
 ## Quick start <a name="quick-start"></a>
 
