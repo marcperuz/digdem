@@ -179,6 +179,10 @@ class SurfMod(dict):
             if indexing == "raster":
                 surf_old = np.flip(surf_old, axis=0).T
                 mask = np.flip(mask, axis=0).T
+                if surf_max is not None:
+                    surf_max = np.flip(surf_max, axis=0).T
+                if surf_min is not None:
+                    surf_min = np.flip(surf_min, axis=0).T
             elif indexing == "ij":
                 pass
 
