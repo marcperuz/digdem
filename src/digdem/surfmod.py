@@ -190,11 +190,11 @@ class SurfMod(dict):
             if xaxis is None:
                 xaxis = np.arange(0, surf_old.shape[0], 1)
             else:
-                assert type(xaxis) == np.ndarray, "xaxis is not np.ndarray"
+                assert isinstance(xaxis, np.ndarray), "xaxis is not np.ndarray"
             if yaxis is None:
                 yaxis = np.arange(0, surf_old.shape[1], 1)
             else:
-                assert type(yaxis) == np.ndarray, "yaxis is not np.ndarray"
+                assert isinstance(yaxis, np.ndarray), "yaxis is not np.ndarray"
 
             sizex_coherent = (
                 mask.shape[0] == surf_old.shape[0] == xaxis.shape[0]
