@@ -4,7 +4,7 @@ on: [push]
 
 jobs:
   build:
-
+    if: "!startsWith(github.event.head_commit.message, 'chore') || github.event.commits > 1"
     runs-on: ubuntu-latest
     strategy:
       matrix:
