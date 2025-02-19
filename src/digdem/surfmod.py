@@ -125,7 +125,8 @@ class SurfMod(dict):
         z = {}
         z_intersections = Tree()
         with open(textfile, "r") as file:
-            line = file.readline()
+            lines = [line.strip() for line in file if line.strip]
+        for line in lines:
             try:
                 assert (
                     line[0] == "#"
