@@ -89,7 +89,7 @@ jobs:
   publish-to-pypi:
     name: >-
       Publish to PyPI
-    if: github.event_name == 'workflow_dispatch' || "!github.event.release.prerelease"
+    if: github.event_name == 'workflow_dispatch' || !github.event.release.prerelease
     needs:
     - publish-to-testpypi
     runs-on: ubuntu-latest
