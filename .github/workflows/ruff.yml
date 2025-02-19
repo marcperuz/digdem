@@ -2,6 +2,7 @@ name: Ruff
 on: [push, pull_request]
 jobs:
   ruff:
+    if: "!startsWith(github.event.head_commit.message, 'chore') || github.event.commits > 1"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
