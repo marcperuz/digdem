@@ -1,5 +1,18 @@
 # CHANGELOG
 
+## [v0.2.4](https://github.com/marcperuz/digdem/releases/tag/v0.2.4) - 2025-02-19 07:45:08+00:00
+
+Minor bugs correction
+
+### Bug Fixes
+
+- surfmod:
+  - deal with ending/trailing spaces in read_control_points ([199af61](https://github.com/marcperuz/digdem/commit/199af61e1f20f106f99a681b3393b2a7767df59e))
+  - change surf_min and surf_max orientation depending on indexing ([1aef6ad](https://github.com/marcperuz/digdem/commit/1aef6ad67b0239e067c1dcd428004568bebf8c36))
+
+- gis:
+  - change ndv by np.nan in rasterize_shapefile ([01727aa](https://github.com/marcperuz/digdem/commit/01727aab664f33d371f2a5041f6a95a08df25439))
+
 ## [v0.2.3](https://github.com/marcperuz/digdem/releases/tag/v0.2.3) - 2024-01-16 09:53:41
 
 Documentation corrected/updated with support for Anaconda installation
