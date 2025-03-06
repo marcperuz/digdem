@@ -126,31 +126,26 @@ class SurfMod(dict):
         z_intersections = Tree()
         with open(textfile, "r") as file:
             lines = [line.strip() for line in file if line.strip]
+        assert (
+            lines[0][0] == "#"
+        ), "File must begin with a section name, identified with #"
         for line in lines:
-            try:
-                assert (
-                    line[0] == "#"
-                ), "File must begin with a section name, identified with #"
-                while line:
-                    if line[-1] == "\n":
-                        line = line[:-1]
-                    if line[0] == "#":
-                        key = line[1:]
-                        pos[key] = []
-                        z[key] = []
+            if line[-1] == "\n":
+                line = line[:-1]
+            if line[0] == "#":
+                key = line[1:]
+                pos[key] = []
+                z[key] = []
+            else:
+                vals = line.split(sep)
+                try:
+                    if vals[0][0].isdigit():
+                        pos[key].append(float(vals[0]))
+                        z[key].append(float(vals[1]))
                     else:
-                        vals = line.split(sep)
-                        try:
-                            if vals[0][0].isdigit():
-                                pos[key].append(float(vals[0]))
-                                z[key].append(float(vals[1]))
-                            else:
-                                z_intersections[key][vals[0]] = float(vals[1])
-                        except ValueError:
-                            pass
-                    line = file.readline()
-            except AssertionError:
-                raise
+                        z_intersections[key][vals[0]] = float(vals[1])
+                except ValueError:
+                    pass
         return pos, z, z_intersections
 
     def __init__(
