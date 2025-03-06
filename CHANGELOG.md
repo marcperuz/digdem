@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## [v0.2.5](https://github.com/marcperuz/digdem/releases/tag/v0.2.5) - 2025-03-06 08:53:45+00:00
+
+Bug fix in file reading
+
+### Bug Fixes
+
+- surfmod:
+  - Correct control points reading ([43feb15](https://github.com/marcperuz/digdem/commit/43feb151681fbd18cf2afb32cc89c08add6c378a))
+
 ## [v0.2.4](https://github.com/marcperuz/digdem/releases/tag/v0.2.4) - 2025-02-19 07:45:08+00:00
 
 Minor bugs correction
