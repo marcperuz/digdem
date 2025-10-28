@@ -238,7 +238,7 @@ def rasterize_shapefile(
             burned = rasterio.features.rasterize(
                 shapes=shapes, fill=ndv, out=out_arr, transform=out.transform
             )
-            if "nodata" in meta:
+            if "nodata" in meta and not np.issubdtype(burned.dtype, np.integer):
                 burned[burned == meta["nodata"]] = np.nan
             out.write_band(1, burned)
 
