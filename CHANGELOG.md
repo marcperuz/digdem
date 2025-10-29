@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## [v0.2.6](https://github.com/marcperuz/digdem/releases/tag/v0.2.6) - 2025-10-28 17:18:48+00:00
+
+Minor bug fix in rasterize function
+
+### Bug Fixes
+
+- gis:
+  - keep ndv in rasterize_shapefile if raster contains int ([be6faa8](https://github.com/marcperuz/digdem/commit/be6faa882584a7247ec4f301a341634fca33c4ab))
+
 ## [v0.2.5](https://github.com/marcperuz/digdem/releases/tag/v0.2.5) - 2025-03-06 08:53:45+00:00
 
 Bug fix in file reading
